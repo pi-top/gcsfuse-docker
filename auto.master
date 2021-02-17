@@ -1,1 +1,0 @@
-/mnt	/etc/autofs/auto.gcsfuse	--timeout=60 --ghost --verbose

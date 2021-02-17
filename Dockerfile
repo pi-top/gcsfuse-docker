@@ -1,21 +1,33 @@
 FROM debian:buster
 
-COPY  setup-gcsfuse.sh .
-RUN ./setup-gcsfuse.sh
+########################
+# Google Cloud Storage #
+########################
+COPY  install-gcsfuse.sh .
+RUN ./install-gcsfuse.sh
 
-COPY  setup-reprepreo.sh .
-RUN ./setup-reprepreo.sh
 
-RUN mkdir -p /etc/autofs && touch /etc/autofs/auto.gcsfuse
+############
+# reprepro #
+############
+COPY  install-reprepreo.sh .
+RUN ./install-reprepreo.sh
 
-ADD auto.master /etc/auto.master
+COPY configure-reprepro.sh .
+RUN ./configure-reprepro.sh
 
+
+#######################
+# Environment/Volumes #
+#######################
+# Work out of GCS bucket
 WORKDIR /mnt
 
-VOLUME /mnt
-VOLUME /etc/gcloud
-VOLUME /etc/autofs
+# GCS key
+VOLUME /gcloud
+ENV GOOGLE_APPLICATION_CREDENTIALS /gcloud/service-account.json
 
-ENV GOOGLE_APPLICATION_CREDENTIALS /etc/gcloud/service-account.json
-
-CMD ["/usr/sbin/automount", "-t", "0", "-f", "/etc/auto.master"]
+# GPG signing keys
+VOLUME /config
+ENV GNUPGHOME /config/.gnupg
+COPY import-gpg-keys.sh /
