@@ -24,7 +24,7 @@ RUN ./configure-reprepro.sh
 WORKDIR /mnt
 
 # Mount artifacts to incoming
-VOLUME /mnt/incoming
+VOLUME /incoming
 ENV GOOGLE_APPLICATION_CREDENTIALS /gcloud/service-account.json
 
 # GCS key
