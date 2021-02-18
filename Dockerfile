@@ -34,4 +34,8 @@ ENV GOOGLE_APPLICATION_CREDENTIALS /gcloud/service-account.json
 # GPG signing keys
 VOLUME /config
 ENV GNUPGHOME /config/.gnupg
+
+# Scripts to run on Docker machine after starting (see README)
 COPY import-gpg-keys.sh /
+COPY include-changes-from-incoming.sh /
+COPY mount-gcs.sh /
