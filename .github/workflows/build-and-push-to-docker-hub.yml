@@ -2,7 +2,7 @@ name: Build Image and Push to Docker Hub
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "ci-test-docker-*" ]
 
 jobs:
   build-push-docker-hub:
@@ -36,9 +36,9 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64
           push: true
-          tags: pitop/gcsfuse:latest
+          tags: pitop/reprepro-gcs:latest
 
       - name: Show image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
